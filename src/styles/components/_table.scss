@@ -1,0 +1,256 @@
+@forward "../_layout/grid";
+@use "../_variables/colors" as vars;
+
+// Toggle Buttons
+.view_toggle {
+  display: flex;
+  margin-bottom: 20px;
+
+  button {
+    padding: 8px 2px 8px 2px;
+    margin: 0 5px;
+    border: none;
+    cursor: pointer;
+    color: #777;
+    font-weight: bold;
+    background-color: vars.$white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    &.active {
+      color: vars.$light-black;
+      border-bottom: 2px solid vars.$light-black;
+    }
+  }
+}
+.add_task_button {
+  font-family: "urbanist", sans-serif;
+  padding: 8px 12px;
+  background-color: transparent;
+  color: vars.$light-black;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  &::first-letter {
+    color: vars.$add-button-color;
+  }
+}
+
+// Table Header
+.table_header {
+  width: 100%;
+  table-layout: fixed; // Ensures columns align properly
+  border-collapse: collapse;
+
+  th {
+    padding: 10px;
+    background: vars.$white;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.8rem;
+    border-top: 1px solid vars.$light-grey-300;
+    color: #777;
+  }
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+.accordion {
+  z-index: 0;
+
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-top: 10px;
+  overflow: hidden;
+  // font-size: rem;
+}
+
+.accordion_header {
+  z-index: 0;
+
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: vars.$todo-table-header;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+// Content & Table Styling
+.accordion_content {
+  // padding: 10px;
+  background-color: vars.$light-grey-200;
+}
+
+.task_icons {
+  transition: all 300ms;
+  &_1 {
+    // margin-right: 0.5rem;
+    color: vars.$grey-500;
+    &:hover {
+      transform: scale(1.1);
+    }
+    @media (max-width: 992px) {
+    }
+    @media (max-width: 600px) {
+      margin-right: 1rem;
+    }
+  }
+  &_2 {
+    cursor: grab;
+    // margin-right: 0.5rem;
+    color: vars.$grey-500;
+    &:hover {
+      transform: scale(1.1);
+      color: vars.$grey-600;
+    }
+    @media (max-width: 992px) {
+    }
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+  &_3 {
+    margin-right: 0.5rem;
+    color: vars.$grey-500;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+      color: vars.$grey-600;
+    }
+    @media (max-width: 992px) {
+    }
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+}
+@media (max-width: 600px) {
+}
+
+.accordion_content_table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  tbody .task_status {
+    display: inline-block;
+    background: #d2d2d2;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+
+  &_head {
+    display: none;
+  }
+  tr {
+    &:not(:last-child) {
+      border-bottom: 1px solid #ccc;
+    }
+  }
+  th,
+  td {
+    text-align: left;
+    padding: 10px;
+    vertical-align: middle;
+    &:first-child {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+}
+
+.empty_accordion {
+  padding: 5rem;
+  text-align: center;
+  // margin : 5rem;
+}
+.edit_delete_card_container {
+  transition: all 300ms;
+  z-index: 1;
+  border: 1px solid vars.$logout-button-border-color;
+  position: absolute;
+  left: -6rem;
+  top: -2.5rem;
+  background-color: vars.$logout-button-color;
+  border-radius: 10px;
+  opacity: 0;
+  visibility: hidden;
+  & ul {
+    margin: 0;
+    padding: 5px 5px 5px 5px;
+    list-style: none;
+
+    & li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: 600;
+
+      &:hover {
+        background-color: vars.$logout-button-border-color;
+        cursor: pointer;
+      }
+    }
+  }
+  &:hover {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.edit_button_container {
+  position: relative;
+  float: right;
+  &:hover {
+    // transform: scale(1.1);
+    cursor: pointer;
+    .edit_delete_card_container {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+.options_button {
+  // position: relative;
+  z-index: 0;
+  transition: all 300ms;
+  &:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    .edit_delete_card_container {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+}
+@media (max-width: 600px) {
+  tbody .task_status {
+    display: none !important;
+  }
+  .task_category {
+    display: none !important;
+  }
+  .task_due_date {
+    display: none !important;
+  }
+}

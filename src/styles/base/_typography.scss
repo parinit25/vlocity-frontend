@@ -1,0 +1,81 @@
+@use "../_variables/colors" as vars;
+
+.heading_primary {
+    backface-visibility: hidden;
+    color: vars.$white;
+    text-transform: uppercase;
+    margin-bottom: 4rem; // Reduced for better spacing
+
+    &Main {
+        display: block;
+        font-size: 3rem; // Reduced for responsiveness
+        font-weight: 700;
+        margin-bottom: 1rem;;
+        letter-spacing: 1rem; // Reduced spacing
+        animation: moveInLeft 1.5s ease-out;
+    }
+
+    &Sub {
+        display: block;
+        font-size: 1rem;
+        font-weight: 400;
+        letter-spacing: 0.1rem; // Reduced spacing
+        animation: moveInRight 1.5s ease-out;
+    }
+}
+
+.heading_secondary {
+    display: inline-block;
+    font-size: 3rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background-image: linear-gradient(to right, #{vars.$primary}, #{vars.$secondary});
+    background-clip: text;
+    color: transparent;
+    transition: all 0.2s;
+    letter-spacing: 2px;
+
+    &:hover {
+        transform: skewY(2deg) skewX(10deg) scale(1.05);
+        text-shadow: 0.5rem 1rem 2rem rgba(vars.$light-black, 0.2);
+    }
+}
+
+.heading_tertiary {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.paragraph {
+    font-size: 1rem;
+    font-weight: 400;
+
+    &:not(:last-child) {
+        margin-bottom: 2rem; // Reduced spacing for better layout
+    }
+}
+
+@keyframes moveInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

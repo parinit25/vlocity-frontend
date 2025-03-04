@@ -1,0 +1,68 @@
+.container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.pollSection {
+  margin-top: 20px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.voteButton {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.resultsSection {
+  margin-top: 30px;
+}
+
+.result {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.votes {
+  font-weight: bold;
+}
+
+.commentsSection {
+  margin-top: 40px;
+}
+
+.commentInput {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.commentsList {
+  margin-top: 20px;
+}
+
+.comment {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.replySection {
+  margin-top: 10px;
+}
+
+.replies {
+  margin-left: 20px;
+  border-left: 2px solid #ddd;
+  padding-left: 10px;
+}
