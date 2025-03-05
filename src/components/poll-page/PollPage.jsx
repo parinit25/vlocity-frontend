@@ -13,7 +13,7 @@ const PollPage = () => {
 
   useEffect(() => {
     fetchPolls();
-  }, [fetchPolls]);
+  }, []);
 
   const poll = polls.find((p) => p._id === pollId);
 
@@ -45,7 +45,7 @@ const PollPage = () => {
     <div className={styles.container}>
       <h2>{poll.question}</h2>
       <div className={styles.pollSection}>
-        {poll.options.map((option, index) => (
+        {poll?.options?.map((option, index) => (
           <label key={index} className={styles.option}>
             <input
               type="radio"
@@ -68,7 +68,7 @@ const PollPage = () => {
 
       <div className={styles.resultsSection}>
         <h3>Results:</h3>
-        {poll.options.map((option, index) => (
+        {poll?.options?.map((option, index) => (
           <div key={index} className={styles.result}>
             <span>{option.text}</span>
             <span className={styles.votes}>{option.votes} votes</span>
@@ -92,7 +92,10 @@ const PollPage = () => {
           {poll.comments.map((comment) => (
             <div key={comment._id} className={styles.comment}>
               <p>
-                <strong>{comment.user.firstName}:</strong> {comment.text}
+                <strong>
+                  {comment?.firstName} {comment?.lastName}:
+                </strong>{" "}
+                {comment.text}
               </p>
               <button onClick={() => setReplyingTo(comment._id)}>Reply</button>
 
@@ -109,11 +112,14 @@ const PollPage = () => {
                 </div>
               )}
 
-              {comment.replies.length > 0 && (
+              {comment?.replies?.length > 0 && (
                 <div className={styles.replies}>
                   {comment.replies.map((reply) => (
                     <p key={reply._id}>
-                      <strong>{reply.user.firstName}:</strong> {reply.text}
+                      <strong>
+                        {reply?.firstName} {reply?.lastName}:
+                      </strong>{" "}
+                      {reply?.text}
                     </p>
                   ))}
                 </div>

@@ -4,10 +4,7 @@ import { useAuth } from "./AuthContext";
 import { io } from "socket.io-client";
 
 const PollContext = createContext();
-
-const socket = io(process.env.REACT_APP_BASE_URL, {
-  withCredentials: true,
-});
+const socket = io(process.env.REACT_APP_BASE_URL);
 
 export const PollProvider = ({ children }) => {
   const { user } = useAuth();
@@ -23,6 +20,7 @@ export const PollProvider = ({ children }) => {
     try {
       setLoading(true);
       const { data } = await axios.get(API_URL);
+      console.log(data, "data of polls");
       setPolls(data);
       setLoading(false);
     } catch (err) {
@@ -71,67 +69,44 @@ export const PollProvider = ({ children }) => {
     }
   };
 
-  const votePoll = async (pollId, optionIndex) => {
-    if (!user?.accessToken) return;
-    try {
-      const { data } = await axios.post(
-        `${API_URL}/vote`,
-        { pollId, optionIndex },
-        { headers: { Authorization: `Bearer ${user?.accessToken}` } }
-      );
-      setPolls((prev) =>
-        prev.map((poll) => (poll._id === pollId ? data.poll : poll))
-      );
-      setVotedPolls((prev) => [...prev, data.poll]);
-    } catch (err) {
-      setError(err.message);
-    }
+  const votePoll = (pollId, optionIndex) => {
+    if (!user) return;
+    socket.emit("votePoll", { pollId, optionIndex, userId: user._id });
   };
 
-  const addComment = async (pollId, text) => {
-    if (!user?.accessToken) return;
-    try {
-      const { data } = await axios.post(
-        `${API_URL}/${pollId}/comment`,
-        { text },
-        { headers: { Authorization: `Bearer ${user?.accessToken}` } }
-      );
-      setPolls((prev) =>
-        prev.map((poll) => (poll._id === pollId ? data.poll : poll))
-      );
-    } catch (err) {
-      setError(err.message);
-    }
+  const addComment = (pollId, text) => {
+    if (!user) return;
+    socket.emit("addComment", { pollId, text, userId: user._id });
   };
 
-  const replyToComment = async (pollId, commentId, text) => {
-    if (!user?.accessToken) return;
-    try {
-      const { data } = await axios.post(
-        `${API_URL}/${pollId}/comment/${commentId}/reply`,
-        { text },
-        { headers: { Authorization: `Bearer ${user?.accessToken}` } }
-      );
-      setPolls((prev) =>
-        prev.map((poll) => (poll._id === pollId ? data.poll : poll))
-      );
-    } catch (err) {
-      setError(err.message);
-    }
+  const replyToComment = (pollId, commentId, text) => {
+    if (!user) return;
+    socket.emit("replyToComment", {
+      pollId,
+      commentId,
+      text,
+      userId: user._id,
+    });
   };
 
   useEffect(() => {
     socket.on("pollUpdated", (data) => {
-      console.log("Poll updated:", data);
+      console.log(data, "data");
       setPolls((prev) =>
         prev.map((poll) =>
-          poll._id === data.pollId ? { ...poll, options: data.options } : poll
+          poll._id === data.pollId
+            ? {
+                ...poll,
+                options: data.updatedPoll.options,
+                comments: data.updatedPoll.comments,
+              }
+            : poll
         )
       );
     });
 
     socket.on("commentAdded", (data) => {
-      console.log("Comment added:", data);
+      console.log(data, "commentAdded");
       setPolls((prev) =>
         prev.map((poll) =>
           poll._id === data.pollId
